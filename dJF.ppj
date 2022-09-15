@@ -9,14 +9,13 @@
     <Variables>
         <Variable Name="ModName" Value="DeviouslyJoyful"/>
         <Variable Name="ThisProject" Value="."/>
-        <Variable Name="OtherProject" Value="..\Deviously Joyful"/>
         <Variable Name="Rel" Value=".\.releases"/>
         <Variable Name="MO2" Value=".."/>
         <Variable Name="Ver" Value="2.0"/>
     </Variables>
     <Imports>
         <Import>@ThisProject\Source\Scripts</Import>
-        <Import>@OtherProject\Source\Scripts</Import>
+        <Import>@MO2\Joyful Followers\Source\Scripts</Import>
         <Import>@MO2\Creation Kit\Source\Scripts</Import>
         <!-- Ressources -->
         <Import>@MO2\PapyrusUtil SE - Modders Scripting Utility Functions\Source\Scripts</Import>
@@ -42,7 +41,7 @@
         <Import>C:\Program Files (x86)\Steam\steamapps\common\Skyrim Special Edition\Data\Source\Scripts</Import>
     </Imports>
     <Folders>
-        <Folder>@OtherProject\Source\Scripts</Folder>
+        <Folder>@ThisProject\Source\Scripts</Folder>
     </Folders>
     <ZipFiles Output="@Rel">
         <ZipFile Name="@ModName @Ver" RootDir="@ThisProject" Compression="deflate">

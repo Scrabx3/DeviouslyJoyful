@@ -13,6 +13,10 @@ int Property RestKeyCount Auto Hidden
 int Property ChastKeyCount Auto Hidden
 int Property PiercKeyCount Auto Hidden
 
+int Property ChatityKeyIdx = 1 AutoReadOnly Hidden
+int Property RestraintKeyIdx = 2 AutoReadOnly Hidden
+int Property PiercingKeyIdx = 3 AutoReadOnly Hidden
+
 ; -------------------------- Code
 ;Remove/Add Keys // 1 - ChastKey ; 2 - RestKey ; 3 - PiercKey
 Function RemKey(int type, int amount)

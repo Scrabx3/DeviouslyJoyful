@@ -22,4 +22,4 @@ EndFunction
 
 ;END FRAGMENT CODE - Do not edit anything between this and the begin comment
 
-JFDDCore  Property DD  Auto  
+JFDDMain  Property main   Auto  

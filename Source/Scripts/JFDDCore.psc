@@ -1,4 +1,4 @@
-Scriptname JFDDCore extends JFCore  Conditional
+Scriptname JFDDCore extends Quest Conditional
 
 ; ------------------------------------- Property
 JFDDKeyInv Property KeyInv Auto ;Pointing at Keyholders Chest
@@ -17,74 +17,14 @@ ReferenceAlias Property KH_Giver Auto
 Scene Property KH_Paid Auto ; tipp
 Scene Property KH_Served Auto ; key
 ; -- Libs
-zadLibs Property Lib0 Auto
-zadxLibs Property Lib1 Auto
-zadxLibs2 Property Lib2 Auto
 ; ------------------------------------- Variables
 ; ------- PetCollar MCM Settings
 bool StoredService
 int StoredArousal
 int StoredArmorType
 
-; ------------------------------------- Code
-; =========================================================
-; ========================	Public	=======================
-; =========================================================
 
-
-; =========================================================
-; ==================   Devious Devices  ===================
-; =========================================================
-; -------------------- Generic
-; Just a wrapper to easily remove DD Items since almost every Script points at this one here anyway...
-; 0 - Blindfold /// 1 - Heavy Bondage /// 2 - Gag
-; 3 - Boots /// 5 - Gloves /// 5 - HobbleSkirt
-Function RemoveDD(actor target, int type)
-  If(type == 0)
-    Lib0.UnlockDeviceByKeyword(target, Lib0.zad_DeviousBlindfold)
-  ElseIf(type == 1)
-    Lib0.UnlockDeviceByKeyword(target, Lib0.zad_DeviousHeavyBondage)
-  ElseIf(type == 2)
-    Lib0.UnlockDeviceByKeyword(target, Lib0.zad_DeviousGag)
-  ElseIf(type == 3)
-    Lib0.UnlockDeviceByKeyword(target, Lib0.zad_DeviousBoots)
-  ElseIf(type == 4)
-    Lib0.UnlockDeviceByKeyword(target, Lib0.zad_DeviousGloves)
-	ElseIf(type == 5)
-    Lib0.UnlockDeviceByKeyword(target, Lib0.zad_DeviousHobbleSkirt)
-  EndIf
-endFunction
-
-; -------------------- Events
-; -------- Rubber Suit
-Function RubberSuit(actor target)
-	int colour = Utility.RandomInt(0, 3)
-	If(Colour == 0 || Util.FPublicHumiliation) ;trapsnarent
-		Lib0.LockDevice(Target, Lib1.zadx_catsuit_transparent_Inventory)
-	ElseIf(Colour == 1) ;black
-		Lib0.LockDevice(Target, Lib1.zadx_catsuit_black_Inventory)
-	ElseIf(Colour == 2) ;white
-		Lib0.LockDevice(Target, Lib1.zadx_catsuit_white_Inventory)
-	Else ;pink
-		Lib0.LockDevice(Target, Lib1.zadx_catsuit_pink_Inventory)
-	EndIf
-EndFunction
-
-Function AddRubberSuit()
-  int colour = Utility.RandomInt(0, 3)
-  If(Colour == 0 || Util.FPublicHumiliation) ;transparent
-		PlayerRef.AddItem(Lib1.zadx_catsuit_transparent_Inventory)
-	ElseIf(Colour == 1) ;black
-		PlayerRef.AddItem(Lib1.zadx_catsuit_black_Inventory)
-	ElseIf(Colour == 2) ;white
-		PlayerRef.AddItem(Lib1.zadx_catsuit_white_Inventory)
-	Else ;pink
-		PlayerRef.AddItem(Lib1.zadx_catsuit_pink_Inventory)
-	EndIf
-EndFunction
-
-
-; -------------------- Generic Punishments
+;/ -------------------- Generic Punishments
 ; Function to start Generic punishments
 ; If you are not using this Function to start a Generic punishment, make sure to manually set the Flag in "JFEventStorage" to let the Follower know that they arent unequipping Devices in the specific Slot
 ; --------- Parameter
@@ -506,13 +446,6 @@ EndFunction
 
 ; -------------------- Punishment Games
 ; -------- ShutUp
-Function ShutUp(bool Starting)
-  If(Starting == true)
-    Lib0.LockDevice(PlayerRef, Lib1.zadx_GagEboniteHarnessBallBig_Inventory, true)
-  Else
-    Lib0.UnlockDevice(PlayerRef, Lib1.zadx_GagEboniteHarnessBallBig_Inventory, none, Lib0.zad_DeviousGag, true)
-  EndIf
-EndFunction
 
 ; -------- PetCollar
 Function PetCollar(bool Starting, Actor Vic)
@@ -689,3 +622,5 @@ Event KeyHuntClose(int tid, bool HasPlayer)
 	KH_Served.Start()
 	UnregisterForModEvent("HookAnimationEnding_KeyHunter")
 EndEvent
+
+/;

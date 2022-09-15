@@ -6,14 +6,12 @@ Scriptname TIJFDD__ShutUpClose1 Extends TopicInfo Hidden
 Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-Gaming.CloseQuest()
-; Core.SDP(false)
+JFMainEvents.Submit(false)
+GetOwningQuest().SetStage(50)
 ;END CODE
 EndFunction
 ;END FRAGMENT
 
 ;END FRAGMENT CODE - Do not edit anything between this and the begin comment
 
-JFCore Property Core  Auto  
-
-JFPunishmentGames Property Gaming Auto
+int property n auto
