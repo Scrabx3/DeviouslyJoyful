@@ -15,18 +15,11 @@ EndFunction
 Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-DD.PetCollar(true, PlayerRef)
-If(MCM.bPetCollarMCM == true)
-    DD.PCMService(Utility.RandomInt(0, 2))
-EndIf
+main.PetCollar(Game.GetPlayer(), true)
 ;END CODE
 EndFunction
 ;END FRAGMENT
 
 ;END FRAGMENT CODE - Do not edit anything between this and the begin comment
 
-JFDDCore Property DD Auto
-
-JFMCM Property MCM  Auto  
-
-Actor Property PlayerRef  Auto  
+JFDDmain Property main  Auto
