@@ -6,7 +6,11 @@ Scriptname TIJFDD__UnlockGag Extends TopicInfo Hidden
 Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-(GetOwningQuest() as JFDDCore).DDUnequip(2)
+JFDDMain main = GetOwningQuest() as JFDDMain
+main.RemoveDD(Game.GetPlayer(), main.GagIdx)
+
+JFDDKeyInv keys = main.KeyInventory
+keys.RemoveKey(keys.RestraintsKeyIdx)
 ;END CODE
 EndFunction
 ;END FRAGMENT

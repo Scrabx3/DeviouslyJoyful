@@ -1,26 +1,40 @@
-Scriptname JFDDMain extends Quest  
+Scriptname JFDDMain extends Quest Conditional
 
 zadLibs Property Lib0 Auto
 zadxLibs Property Lib1 Auto
 zadxLibs2 Property Lib2 Auto
 
+JFDDKeyInv Property KeyInventory Auto
+
 ; =========================================================
 ; ==================   Devious Devices  ===================
 ; =========================================================
+int Property BlindfoldIdx    = 0 AutoReadOnly
+int Property HeavyBondageIdx = 1 AutoReadOnly
+int Property GagIdx          = 2 AutoReadOnly
+int Property BootsIdx        = 3 AutoReadOnly
+int Property GlovesIdx       = 4 AutoReadOnly
+int Property HobbleSkirtIdx  = 5 AutoReadOnly
+
+bool Property PunishmentBlindfold     = false Auto Hidden Conditional
+bool Property PunishmentHeavyBondage  = false Auto Hidden Conditional
+bool Property PunishmentGag           = false Auto Hidden Conditional
+bool Property PunishmentBoots         = false Auto Hidden Conditional
+bool Property PunishmentGloves        = false Auto Hidden Conditional
+
 ; -------------------- Generic
-; 0 - Blindfold | 1 - Heavy Bondage | 2 - Gag | 3 - Boots | 4 - Gloves | 5 - HobbleSkirt
 Function RemoveDD(Actor akTarget, int aiType)
-  If(aiType == 0)
+  If(aiType == BlindfoldIdx)
     Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousBlindfold)
-  ElseIf(aiType == 1)
+  ElseIf(aiType == HeavyBondageIdx)
     Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousHeavyBondage)
-  ElseIf(aiType == 2)
+  ElseIf(aiType == GagIdx)
     Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousGag)
-  ElseIf(aiType == 3)
+  ElseIf(aiType == BootsIdx)
     Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousBoots)
-  ElseIf(aiType == 4)
+  ElseIf(aiType == GlovesIdx)
     Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousGloves)
-	ElseIf(aiType == 5)
+	ElseIf(aiType == HobbleSkirtIdx)
     Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousHobbleSkirt)
   EndIf
 endFunction

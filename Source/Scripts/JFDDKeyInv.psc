@@ -1,84 +1,52 @@
 Scriptname JFDDKeyInv extends ObjectReference
 ; -------------------------- Properties
-JFMCM Property MCM Auto
-JFPlayerScr Property PlayerScr Auto
+JFDDMCM Property MCM Auto
 
-Key Property ChastKey Auto
-Key Property RestKey Auto
-Key Property PiercKey Auto
+Keyword Property LocTypeDungeon Auto
+Message Property FoundKeyMsg  Auto
+
+Key[] Property DDKeys Auto
 
 ; -------------------------- Variables
-;Need them in JoyFol Script
-int Property RestKeyCount Auto Hidden
-int Property ChastKeyCount Auto Hidden
-int Property PiercKeyCount Auto Hidden
-
-int Property ChatityKeyIdx = 1 AutoReadOnly Hidden
-int Property RestraintKeyIdx = 2 AutoReadOnly Hidden
-int Property PiercingKeyIdx = 3 AutoReadOnly Hidden
+int Property ChastityKeyIdx   = 0 AutoReadOnly
+int Property RestraintsKeyIdx = 1 AutoReadOnly
+int Property PiercingKeyIdx   = 2 AutoReadOnly
 
 ; -------------------------- Code
-;Remove/Add Keys // 1 - ChastKey ; 2 - RestKey ; 3 - PiercKey
-Function RemKey(int type, int amount)
-  If(type == 1)
-    RemoveItem(ChastKey, amount)
-  ElseIf(type == 2)
-    RemoveItem(RestKey, amount)
-  ElseIf(type == 3)
-    RemoveItem(PiercKey, amount)
-  EndIf
+Function RemoveKey(int aiType, int aiAmount = 1)
+  RemoveItem(DDKeys[aiType], aiAmount)
 EndFunction
 
-Function AddKey(int type, int amount = 1)
-  If(type == 1)
-    AddItem(ChastKey, amount)
-  ElseIf(type == 2)
-    AddItem(RestKey, amount)
-  ElseIf(type == 3)
-    AddItem(PiercKey, amount)
-  EndIf
+Function AddKey(int aiType, int aiAmount = 1)
+  AddItem(DDKeys[aiType], aiAmount)
 EndFunction
-
 
 ; Only allowing DD Keys here
 Event OnItemAdded(Form akBaseItem, int aiItemCount, ObjectReference akItemReference, ObjectReference akSourceContainer)
-  If(akBaseItem != ChastKey && akBaseItem != RestKey && akBaseItem != PiercKey)
+  If(DDKeys.Find(akBaseItem as Key) == -1)
     RemoveItem(akItemReference, aiItemCount, false, akSourceContainer)
   EndIf
 endEvent
 
-
-; Key searching cycle
 Event OnUpdateGameTime()
-  SearchKey()
-EndEvent
-
-Function SearchKey()
-  If(PlayerScr.LocType == "Wilderness" || PlayerScr.LocType == "Dungeon")
-    RegisterForSingleUpdateGameTime(MCM.fKHFreq)
-  EndIf
-  If(CountKeys() >= MCM.iMaxKeyAllowed)
+  If(!MCM.bKHEnabled)
     return
   EndIf
-  if (MCM.iKHChance >= Utility.RandomInt(1, 100))
-    If(MCM.bKHFiNo == true)
-      Debug.Notification("Your follower found a key!")
-    EndIf
-    int KeyChance = Utility.RandomInt(1, 100)
-    if (MCM.iKHChast >= KeyChance)
-      AddItem(ChastKey, 1, true)
-    ElseIf((MCM.iKHChast < KeyChance) && (MCM.iKHRest >= KeyChance))
-      AddItem(RestKey, 1, true)
-    Else
-      Additem(PiercKey, 1, true)
-    endIf
-  endif
-EndFunction
-
-;Count keys
-int Function CountKeys()
-  RestKeyCount = (GetItemCount(RestKey))
-  ChastKeyCount = (GetItemCount(ChastKey))
-  PiercKeyCount = (GetItemCount(PiercKey))
-  return RestKeyCount + ChastKeyCount + PiercKeyCount
-EndFunction
+  Location playerloc = Game.GetPlayer().GetCurrentLocation()
+  If(!playerloc || playerloc.HasKeyword(LocTypeDungeon))
+    RegisterForSingleUpdateGameTime(MCM.fKHFreq)
+  EndIf
+  If(GetNumItems() > MCM.iKHMaxKeys)  ; Can only store Keys in here
+    return
+  ElseIf(Utility.RandomFloat(0, 99.5) >= MCM.fKHChance)
+    return
+  EndIf
+  int draw = JFMain.GetFromWeight(MCM.iKHTypes)
+  If(draw == 0)
+    return
+  EndIf
+  AddItem(DDKeys[draw - 1])
+  If(MCM.bKHNotify)
+    FoundKeyMsg.Show()
+  EndIf
+EndEvent
