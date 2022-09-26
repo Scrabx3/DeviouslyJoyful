@@ -7,6 +7,17 @@ Scriptname QF_JFDD_Punishment_ShutUp_0B005900 Extends Quest Hidden
 ReferenceAlias Property Alias_JoyFol Auto
 ;END ALIAS PROPERTY
 
+;BEGIN FRAGMENT Fragment_3
+Function Fragment_3()
+;BEGIN CODE
+; Quest ends, removing gag
+main.HarnessGagBig(Game.GetPlayer(), false)
+
+SetStage(100)
+;END CODE
+EndFunction
+;END FRAGMENT
+
 ;BEGIN FRAGMENT Fragment_1
 Function Fragment_1()
 ;BEGIN CODE
@@ -16,21 +27,12 @@ NotifyScene.start()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_0
-Function Fragment_0()
+;BEGIN FRAGMENT Fragment_4
+Function Fragment_4()
 ;BEGIN CODE
-; Game started
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_3
-Function Fragment_3()
-;BEGIN CODE
-; Quest ends, removing gag
-main.HarnessGagBig(Game.GetPlayer(), false)
-
-SetStage(100)
+JoyfulFollowers.AddAffection(2)
+JoyfulFollowers.UnlockTimeout(false)
+Stop()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -46,11 +48,10 @@ SetStage(100)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_4
-Function Fragment_4()
+;BEGIN FRAGMENT Fragment_0
+Function Fragment_0()
 ;BEGIN CODE
-JoyfulFollowers.AddAffection(2)
-Stop()
+; Game started
 ;END CODE
 EndFunction
 ;END FRAGMENT

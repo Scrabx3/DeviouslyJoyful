@@ -7,6 +7,18 @@ Scriptname QF_JFDD_Punishment_PetCollar_0B00AA39 Extends Quest Hidden
 ReferenceAlias Property Alias_JoyFol Auto
 ;END ALIAS PROPERTY
 
+;BEGIN FRAGMENT Fragment_3
+Function Fragment_3()
+;BEGIN CODE
+; game over, player wants to be released
+JoyfulFollowers.AddAffection(2)
+JoyfulFollowers.UnlockTimeout(false)
+
+SetStage(100)
+;END CODE
+EndFunction
+;END FRAGMENT
+
 ;BEGIN FRAGMENT Fragment_1
 Function Fragment_1()
 ;BEGIN CODE
@@ -16,35 +28,25 @@ NotifyScene.start()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_2
-Function Fragment_2()
-;BEGIN CODE
-; Player said the enjoyed it :)
-JFMainEvents events = JFMainEvents.Singleton()
-events.Bondage = true
-events.Humiliation = true
-
-JoyfulFollowers.AddAffection(3)
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_3
-Function Fragment_3()
-;BEGIN CODE
-; game over, player wants to be released
-
-SetStage(100)
-JoyfulFollowers.AddAffection(2)
-;END CODE
-EndFunction
-;END FRAGMENT
-
 ;BEGIN FRAGMENT Fragment_4
 Function Fragment_4()
 ;BEGIN CODE
 main.PetCollar(Game.GetPlayer(), false)
 Stop()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_2
+Function Fragment_2()
+;BEGIN CODE
+; Player said they enjoyed it :)
+JFMainEvents events = JFMainEvents.Singleton()
+events.Bondage = true
+events.Humiliation = true
+JoyfulFollowers.AddAffection(2)
+
+JoyfulFollowers.UnlockTimeout(false)
 ;END CODE
 EndFunction
 ;END FRAGMENT

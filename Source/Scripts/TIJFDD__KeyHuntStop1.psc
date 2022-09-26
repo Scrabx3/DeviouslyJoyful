@@ -6,17 +6,9 @@ Scriptname TIJFDD__KeyHuntStop1 Extends TopicInfo Hidden
 Function Fragment_1(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-(GetOwningQuest() as JFDDKeyHunt).KeyHuntStop()
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_0
-Function Fragment_0(ObjectReference akSpeakerRef)
-Actor akSpeaker = akSpeakerRef as Actor
-;BEGIN CODE
-akSpeaker.SetAV("WaitingForPlayer", 0)
-Util.FBondageLover = false
+GetOwningQuest().Stop()
+JFMainEvents.Singleton().Bondage = false
+JFMainEvents.Singleton().Humiliation = false
 ;END CODE
 EndFunction
 ;END FRAGMENT
