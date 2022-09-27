@@ -6,8 +6,9 @@ Scriptname TIJFDD__ChainRubber1 Extends TopicInfo Hidden
 Function Fragment_1(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-(KeyChest as JFDDKeyInv).AddKey(2)
-DDCore.FadeBlackBack()
+chest.AddKey(chest.RestraintsKeyIdx, 1)
+
+JFMain.Get().FadeBack()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -16,12 +17,11 @@ EndFunction
 Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-DDCore.FadeBlack()
-Utility.Wait(0.3)
+JFMain.Get().FadeToBlack()
 If(JFDD_EventChains_RubberSuit.Show() == 1)
   JFDD_EventChains_RubberSuit1.Show()
 EndIf
-DDCore.RubberSuit(DDCore.PlayerRef)
+main.EquipRubberSuit(Game.GetPlayer())
 ;END CODE
 EndFunction
 ;END FRAGMENT

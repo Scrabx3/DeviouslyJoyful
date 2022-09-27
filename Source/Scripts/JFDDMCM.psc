@@ -1,4 +1,4 @@
-Scriptname JFDDMCM extends jfmcmaddonpage  
+Scriptname JFDDMCM extends jfmcmaddonpage
 
 ; ---------------------------- Vars
 
@@ -47,14 +47,14 @@ Function InitializePage()
 
   iDeviceWeights = new int[9]
   iDeviceWeights[0] = 50  ; Blindfold
-  iDeviceWeights[1] = 50  ; Gag
-  iDeviceWeights[2] = 20  ; Heavy
-  iDeviceWeights[3] = 80  ; Cuffs Arm
-  iDeviceWeights[4] = 80  ; Cuffs Leg
-  iDeviceWeights[5] = 70  ; Ankle
-  iDeviceWeights[6] = 70  ; Corset
-  iDeviceWeights[7] = 40  ; Rubber Gloves
-  iDeviceWeights[8] = 40  ; Rubber Boots
+  iDeviceWeights[1] = 20  ; HeavyBondage
+  iDeviceWeights[2] = 50  ; Gag
+  iDeviceWeights[3] = 65  ; Gloves
+  iDeviceWeights[4] = 65  ; Boots
+  iDeviceWeights[5] = 75  ; CuffsArm
+  iDeviceWeights[6] = 75  ; CuffsLeg
+  iDeviceWeights[7] = 30  ; AnkleShackles
+  iDeviceWeights[8] = 40  ; Corset
 
   iKHTypes = new int[3]
   iKHTypes[0] = 85

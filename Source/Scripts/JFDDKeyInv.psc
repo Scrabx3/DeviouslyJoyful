@@ -1,18 +1,28 @@
 Scriptname JFDDKeyInv extends ObjectReference
-; -------------------------- Properties
-JFDDMCM Property MCM Auto
 
+JFDDMCM Property MCM Auto
 Keyword Property LocTypeDungeon Auto
 Message Property FoundKeyMsg  Auto
-
 Key[] Property DDKeys Auto
 
-; -------------------------- Variables
 int Property ChastityKeyIdx   = 0 AutoReadOnly
 int Property RestraintsKeyIdx = 1 AutoReadOnly
 int Property PiercingKeyIdx   = 2 AutoReadOnly
 
-; -------------------------- Code
+; --------------------------
+
+; Remove all Keys of the given Type from Player inv. Type = -1 => Remove all Keys
+Function TakeKeysFromPlayer(int aiType = -1) 
+  If(aiType == -1)
+    TakeKeysFromPlayer(ChastityKeyIdx)
+    TakeKeysFromPlayer(RestraintsKeyIdx)
+    TakeKeysFromPlayer(PiercingKeyIdx)
+    return
+  EndIf
+  Actor Player = Game.GetPlayer()
+  Player.RemoveItem(DDKeys[aiType], Player.GetItemCount(DDKeys[aiType]), akOtherContainer = Self)
+EndFunction
+
 Function RemoveKey(int aiType, int aiAmount = 1)
   RemoveItem(DDKeys[aiType], aiAmount)
 EndFunction

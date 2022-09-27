@@ -6,15 +6,7 @@ Scriptname TIJFDD__UnlockTakeAll Extends TopicInfo Hidden
 Function Fragment_1(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-JFDDCore Core = (GetOwningQuest() as JFDDCore)
-
-Key RestKey = Core.Lib0.restraintsKey
-Key ChastKey = Core.Lib0.chastityKey
-Key PiercKey = Core.Lib0.piercingKey
-
-PlayerRef.RemoveItem(RestKey, PlayerRef.GetItemCount(RestKey), false, Chest)
-PlayerRef.RemoveItem(ChastKey, PlayerRef.GetItemCount(ChastKey), false, Chest)
-PlayerRef.RemoveItem(PiercKey, PlayerRef.GetItemCount(PiercKey), false, Chest)
+chest.TakeKeysFromPlayer()
 ;END CODE
 EndFunction
 ;END FRAGMENT

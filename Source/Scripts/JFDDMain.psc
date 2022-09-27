@@ -8,42 +8,76 @@ zadxLibs2 Property Lib2 Auto
 
 JFDDKeyInv Property KeyInventory Auto
 
+JFDDMain Function Get() global
+  return Quest.GetQuest("JFDD_Main") as JFDDMain
+EndFunction
+
 ; =========================================================
 ; ==================   Devious Devices  ===================
 ; =========================================================
-int Property BlindfoldIdx    = 0 AutoReadOnly
-int Property HeavyBondageIdx = 1 AutoReadOnly
-int Property GagIdx          = 2 AutoReadOnly
-int Property BootsIdx        = 3 AutoReadOnly
-int Property GlovesIdx       = 4 AutoReadOnly
-int Property HobbleSkirtIdx  = 5 AutoReadOnly
+int Property BlindfoldIdx     = 0 AutoReadOnly
+int Property HeavyBondageIdx  = 1 AutoReadOnly
+int Property GagIdx           = 2 AutoReadOnly
+int Property GlovesIdx        = 3 AutoReadOnly
+int Property BootsIdx         = 4 AutoReadOnly
+int Property HobbleSkirtIdx   = 5 AutoReadOnly
+int Property CuffsArmidx      = 6 AutoReadOnly
+int Property CuffsLegIdx      = 7 AutoReadOnly
+int Property AnkleShacklesIdx = 8 AutoReadOnly
+int Property CorsetIdx        = 9 AutoReadOnly
 
 bool Property PunishmentBlindfold     = false Auto Hidden Conditional
 bool Property PunishmentHeavyBondage  = false Auto Hidden Conditional
 bool Property PunishmentGag           = false Auto Hidden Conditional
-bool Property PunishmentBoots         = false Auto Hidden Conditional
 bool Property PunishmentGloves        = false Auto Hidden Conditional
+bool Property PunishmentBoots         = false Auto Hidden Conditional
 
 ; -------------------- Generic
+Keyword Function GetDDKeywordByType(int aiType)
+  Keyword[] k = new Keyword[10]
+  k[0] = Lib0.zad_DeviousBlindfold
+  k[1] = Lib0.zad_DeviousHeavyBondage
+  k[2] = Lib0.zad_DeviousGag
+  k[3] = Lib0.zad_DeviousBoots
+  k[4] = Lib0.zad_DeviousGloves
+  k[5] = Lib0.zad_DeviousHobbleSkirt
+  k[6] = Lib0.zad_DeviousLegCuffs
+  k[7] = Lib0.zad_DeviousArmCuffs
+  k[8] = Lib0.zad_DeviousAnkleShackles
+  k[9] = Lib0.zad_DeviousCorset
+  return k[aiType]
+EndFunction
+
 Function RemoveDD(Actor akTarget, int aiType)
+  Lib0.UnlockDeviceByKeyword(akTarget, GetDDKeywordByType(aiType))
+EndFunction
+
+; This used to be a 200 line function \o/
+Function CreatePunishment(int aiType = -1)
+  If(aiType == -1)
+    aiType = JFMain.GetFromWeight(MCM.iDeviceWeights)
+    If(aiType < HobbleSkirtIdx)
+      aiType -= 1
+    EndIf
+  EndIf
+  Armor device = Lib0.GetGenericDeviceByKeyword(GetDDKeywordByType(aiType))
+  Lib0.LockDevice(Game.GetPlayer(), device)
   If(aiType == BlindfoldIdx)
-    Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousBlindfold)
+    PunishmentBlindfold = true
   ElseIf(aiType == HeavyBondageIdx)
-    Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousHeavyBondage)
+    PunishmentHeavyBondage = true
   ElseIf(aiType == GagIdx)
-    Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousGag)
-  ElseIf(aiType == BootsIdx)
-    Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousBoots)
+    PunishmentGag = true
   ElseIf(aiType == GlovesIdx)
-    Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousGloves)
-	ElseIf(aiType == HobbleSkirtIdx)
-    Lib0.UnlockDeviceByKeyword(akTarget, Lib0.zad_DeviousHobbleSkirt)
+    PunishmentGloves = true
+  ElseIf(aiType == BootsIdx)
+    PunishmentBoots = true
   EndIf
 EndFunction
 
 ; -------------------- Events
 ; -------- Shopping Post - Rubber Suit
-Function RubberSuit(Actor akTarget, int aiColor = -1)
+Function EquipRubberSuit(Actor akTarget, int aiColor = -1)
   If(aiColor < 0)
     aiColor = Utility.RandomInt(0, 3)
   EndIf
@@ -165,4 +199,35 @@ Function KeyHuntingEnd()
   Lib0.UnlockDeviceByKeyword(PlayerRef, Lib0.zad_DeviousBlindfold, true)
   Lib0.UnlockDeviceByKeyword(PlayerRef, Lib0.zad_DeviousBoots, true)
   Lib0.UnlockDeviceByKeyword(PlayerRef, Lib0.zad_DeviousPlugAnal, true)
+EndFunction
+
+; =========================================================
+; =======================   SEXLAB  =======================
+; =========================================================
+
+Actor[] Function ActorArray(Actor akPos1, Actor akPos2 = none, Actor akPos3 = none, Actor akPos4 = none, Actor akPos5 = none) global
+  Actor[] ret = new Actor[5]
+  ret[0] = akPos1
+  ret[1] = akPos2
+  ret[2] = akPos3
+  ret[3] = akPos4
+  ret[4] = akPos5
+  return PapyrusUtil.RemoveActor(ret, none)
+EndFunction
+
+bool Function StartSexDD(Actor[] array, String asTags = "", String asTagSuppress = "", Actor akVictim = none, String asHook = "") global
+  Debug.Trace("[JFDD] Scene called with Actors " + array + " >> hook = " + asHook)
+  int v = JFAnimStarter.ValidateArray(array)
+  If(v > -1)
+    Debug.Trace("[JF] Actor at " + v + "(" + array[v] + ") is invalid, aborting", 2)
+    return -1
+  EndIf
+  SexLabFramework SL = SexLabUtil.GetAPI()
+  If(array.Length == 2)
+    ; add ff tag if a consent lesbian animation
+    If(!akVictim && SL.GetGender(array[0]) == 1 && SL.GetGender(array[1]) == 1)
+      asTags += "ff"
+    EndIf
+  EndIf
+  return Get().Lib0.StartValidDDAnimation(array, akVictim != none, asTags, asTagSuppress, akVictim, akVictim == none, asHook)
 EndFunction
