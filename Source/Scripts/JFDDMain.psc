@@ -1,16 +1,26 @@
 Scriptname JFDDMain extends Quest Conditional
 
 JFDDMCM Property MCM Auto
+JFDDKeyInv Property KeyInventory Auto
 
 zadLibs Property Lib0 Auto
 zadxLibs Property Lib1 Auto
 zadxLibs2 Property Lib2 Auto
 
-JFDDKeyInv Property KeyInventory Auto
+ReferenceAlias Property Follower Auto
 
 JFDDMain Function Get() global
   return Quest.GetQuest("JFDD_Main") as JFDDMain
 EndFunction
+
+Function Maintenance()
+  RegisterForModEvent("JFFollowerRecruited", "NewFollower")
+  MCM.OnGameLoad()
+EndFunction
+
+Event NewFollower(string asEventName, string asStringArg, float afNumArg, form akSender)
+  Follower.ForceRefTo(JoyfulFollowers.GetFollower())
+EndEvent
 
 ; =========================================================
 ; ==================   Devious Devices  ===================

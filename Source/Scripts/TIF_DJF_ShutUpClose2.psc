@@ -12,9 +12,3 @@ EndFunction
 ;END FRAGMENT
 
 ;END FRAGMENT CODE - Do not edit anything between this and the begin comment
-
-JFEventStorage Property Util  Auto
-
-JFDDCore Property Core  Auto
-
-JFPunishmentGames Property gaming  Auto

@@ -1,4 +1,4 @@
-Scriptname JFDDMCM extends jfmcmaddonpage
+Scriptname JFDDMCM extends JFMCMPage
 
 ; ---------------------------- Vars
 
@@ -24,17 +24,18 @@ int[] Property iKHTypes Auto Hidden
 bool bPetCollarLoaded = false
 
 ; ---------------------------- Menu
-bool Function OnGameLoad()
+Function OnGameLoad()
 	If(Quest.GetQuest("PetCollarConfig") != none)
 		bPetCollarLoaded = true
 	else
 		bPetCollarLoaded = false
 		bPetCollarEnab = false
 	endIf
-  return Parent.OnGameLoad()
 EndFunction
 
 Function InitializePage()
+	_PageName = "Deviously Joyful"
+
 	DeviceColors = new string[8]
 	DeviceColors[0] = "$DeviceColor_0"
 	DeviceColors[1] = "$DeviceColor_1"
@@ -62,33 +63,33 @@ Function InitializePage()
   iKHTypes[2] = 25
 EndFunction
 
-Function OnPageCalled()
-  _JFMCM.AddHeaderOption("$DJF_General")
-  _JFMCM.AddMenuOptionST("djfprefcolor", "$DJF_PrefDeviceColor", DeviceColors[iPrefDeviceColor])
-  _JFMCM.AddEmptyOption()
+Function OnPageReset()
+  AddHeaderOption("$DJF_General")
+  AddMenuOptionST("djfprefcolor", "$DJF_PrefDeviceColor", DeviceColors[iPrefDeviceColor])
+  AddEmptyOption()
   int i = 0
   While(i < iDeviceWeights.Length)
-    _JFMCM.AddSliderOptionST("device_" + i, "$DJF_DeviceType_" + i, iDeviceWeights[i], "{0}")
+    AddSliderOptionST("device_" + i, "$DJF_DeviceType_" + i, iDeviceWeights[i], "{0}")
     i += 1
   EndWhile
 
-  _JFMCM.AddHeaderOption("$JDF_MiscEvents")
-  _JFMCM.AddSliderOptionST("shutupdur", "$DJF_ShutUpDuration", ShutUp_Var.Value, "{1}h")
-  _JFMCM.AddEmptyOption()
-  _JFMCM.AddToggleOptionST("petcollarenab", "$DJF_PetCollarEnab", bPetCollarEnab, getFlag(bPetCollarLoaded))
-  _JFMCM.AddSliderOptionST("petcollardur", "$DJF_PetCollarDuration", PetCollar_Var.Value, "{1}h", getFlag(bPetCollarLoaded))
+  AddHeaderOption("$JDF_MiscEvents")
+  AddSliderOptionST("shutupdur", "$DJF_ShutUpDuration", ShutUp_Var.Value, "{1}h")
+  AddEmptyOption()
+  AddToggleOptionST("petcollarenab", "$DJF_PetCollarEnab", bPetCollarEnab, getFlag(bPetCollarLoaded))
+  AddSliderOptionST("petcollardur", "$DJF_PetCollarDuration", PetCollar_Var.Value, "{1}h", getFlag(bPetCollarLoaded))
 
-  _JFMCM.SetCursorPosition(1)
-  _JFMCM.AddHeaderOption("$DJF_KeyHolder")
-  _JFMCM.AddToggleOptionST("khenabled", "$DJF_KHEnabled", bKHEnabled)
-  _JFMCM.AddSliderOptionST("khfrequency", "$DJF_KHFrequency", fKHFreq, "{2}h")
-  _JFMCM.AddSliderOptionST("khchance", "$DJF_KHChance", fKHChance, "{1}%")
-  _JFMCM.AddSliderOptionST("khmaxkeys", "$DJF_KHMaxKeys", iKHMaxKeys, "{0}")
-  _JFMCM.AddToggleOptionST("khnotify", "$DJF_KHNotify", bKHNotify)
-  _JFMCM.AddEmptyOption()
+  SetCursorPosition(1)
+  AddHeaderOption("$DJF_KeyHolder")
+  AddToggleOptionST("khenabled", "$DJF_KHEnabled", bKHEnabled)
+  AddSliderOptionST("khfrequency", "$DJF_KHFrequency", fKHFreq, "{2}h")
+  AddSliderOptionST("khchance", "$DJF_KHChance", fKHChance, "{1}%")
+  AddSliderOptionST("khmaxkeys", "$DJF_KHMaxKeys", iKHMaxKeys, "{0}")
+  AddToggleOptionST("khnotify", "$DJF_KHNotify", bKHNotify)
+  AddEmptyOption()
   int n = 0
   While(n < iKHTypes.Length)
-    _JFMCM.AddSliderOptionST("khtype_" + i, "$DJF_KHType_" + i, iKHTypes[i], "{0}")
+    AddSliderOptionST("khtype_" + n, "$DJF_KHType_" + n, iKHTypes[n], "{0}")
     n += 1
   EndWhile
 EndFunction
@@ -96,14 +97,14 @@ EndFunction
 Event OnSelectST()
 	String[] op = PapyrusUtil.StringSplit(GetState(), "_")
 	If(op[0] == "petcollarenab")
-    bPetCollarEnab != bPetCollarEnab
-    _JFMCM.SetToggleOptionValueST(bPetCollarEnab)
+    bPetCollarEnab = !bPetCollarEnab
+    SetToggleOptionValueST(bPetCollarEnab)
   ElseIf(op[0] == "khenabled")
-    bKHEnabled != bKHEnabled
-    _JFMCM.SetToggleOptionValueST(bKHEnabled)
+    bKHEnabled = !bKHEnabled
+    SetToggleOptionValueST(bKHEnabled)
   ElseIf(op[0] == "khnotify")
-    bKHNotify != bKHNotify
-    _JFMCM.SetToggleOptionValueST(bKHNotify)
+    bKHNotify = !bKHNotify
+    SetToggleOptionValueST(bKHNotify)
   EndIf
 EndEvent
 
@@ -111,41 +112,41 @@ Event OnSliderOpenST()
 	String[] op = PapyrusUtil.StringSplit(GetState(), "_")
   If(op[0] == "device")
     int i = op[1] as int
-		_JFMCM.SetSliderDialogStartValue(iDeviceWeights[i])
-		_JFMCM.SetSliderDialogDefaultValue(50)
-		_JFMCM.SetSliderDialogRange(0, 100)
-		_JFMCM.SetSliderDialogInterval(5)
+		SetSliderDialogStartValue(iDeviceWeights[i])
+		SetSliderDialogDefaultValue(50)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
 	ElseIf(op[0] == "shutupdur")
-		_JFMCM.SetSliderDialogStartValue(ShutUp_Var.Value)
-		_JFMCM.SetSliderDialogDefaultValue(12)
-		_JFMCM.SetSliderDialogRange(6, 48)
-		_JFMCM.SetSliderDialogInterval(0.5)
+		SetSliderDialogStartValue(ShutUp_Var.Value)
+		SetSliderDialogDefaultValue(12)
+		SetSliderDialogRange(6, 48)
+		SetSliderDialogInterval(0.5)
   ElseIf(op[0] == "petcollardur")
-		_JFMCM.SetSliderDialogStartValue(PetCollar_Var.Value)
-		_JFMCM.SetSliderDialogDefaultValue(12)
-		_JFMCM.SetSliderDialogRange(6, 48)
-		_JFMCM.SetSliderDialogInterval(0.5)
+		SetSliderDialogStartValue(PetCollar_Var.Value)
+		SetSliderDialogDefaultValue(12)
+		SetSliderDialogRange(6, 48)
+		SetSliderDialogInterval(0.5)
   ElseIf(op[0] == "khfrequency")
-		_JFMCM.SetSliderDialogStartValue(fKHFreq)
-		_JFMCM.SetSliderDialogDefaultValue(1)
-		_JFMCM.SetSliderDialogRange(0.25, 4)
-		_JFMCM.SetSliderDialogInterval(0.25)
+		SetSliderDialogStartValue(fKHFreq)
+		SetSliderDialogDefaultValue(1)
+		SetSliderDialogRange(0.25, 6)
+		SetSliderDialogInterval(0.25)
   ElseIf(op[0] == "khchance")
-		_JFMCM.SetSliderDialogStartValue(fKHChance)
-		_JFMCM.SetSliderDialogDefaultValue(15)
-		_JFMCM.SetSliderDialogRange(0, 100)
-		_JFMCM.SetSliderDialogInterval(0.5)
+		SetSliderDialogStartValue(fKHChance)
+		SetSliderDialogDefaultValue(15)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(0.5)
   ElseIf(op[0] == "khmaxkeys")
-		_JFMCM.SetSliderDialogStartValue(iKHMaxKeys)
-		_JFMCM.SetSliderDialogDefaultValue(4)
-		_JFMCM.SetSliderDialogRange(0, 9)
-		_JFMCM.SetSliderDialogInterval(1)
+		SetSliderDialogStartValue(iKHMaxKeys)
+		SetSliderDialogDefaultValue(4)
+		SetSliderDialogRange(0, 9)
+		SetSliderDialogInterval(1)
   ElseIf(op[0] == "khtype")
     int i = op[1] as int
-		_JFMCM.SetSliderDialogStartValue(iKHTypes[i])
-		_JFMCM.SetSliderDialogDefaultValue(50)
-		_JFMCM.SetSliderDialogRange(0, 100)
-		_JFMCM.SetSliderDialogInterval(5)
+		SetSliderDialogStartValue(iKHTypes[i])
+		SetSliderDialogDefaultValue(50)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
   EndIf
 EndEvent
 
@@ -154,52 +155,69 @@ Event OnSliderAcceptST(Float afValue)
   If(op[0] == "device")
     int i = op[1] as int
 		iDeviceWeights[i] = afValue as int
-		_JFMCM.SetSliderOptionValueST(afValue, "{1}h")
+		SetSliderOptionValueST(afValue, "{0ß}")
 	ElseIf(op[0] == "shutupdur")
 		ShutUp_Var.Value = afValue
-		_JFMCM.SetSliderOptionValueST(afValue, "{1}h")
+		SetSliderOptionValueST(afValue, "{1}h")
 	ElseIf(op[0] == "petcollardur")
 		PetCollar_Var.Value = afValue
-		_JFMCM.SetSliderOptionValueST(afValue, "{1}h")
+		SetSliderOptionValueST(afValue, "{1}h")
 	ElseIf(op[0] == "khfrequency")
 		fKHFreq = afValue
-		_JFMCM.SetSliderOptionValueST(afValue, "{2}h")
+		SetSliderOptionValueST(afValue, "{2}h")
 	ElseIf(op[0] == "khchance")
 		fKHChance = afValue
-		_JFMCM.SetSliderOptionValueST(afValue, "{1}%")
+		SetSliderOptionValueST(afValue, "{1}%")
 	ElseIf(op[0] == "khmaxkeys")
 		iKHMaxKeys = afValue as int
-		_JFMCM.SetSliderOptionValueST(afValue, "{0}")
+		SetSliderOptionValueST(afValue, "{0}")
 	ElseIf(op[0] == "khtype")
     int i = op[1] as int
 		iKHTypes[i] = afValue as int
-		_JFMCM.SetSliderOptionValueST(afValue, "{0}")
+		SetSliderOptionValueST(afValue, "{0}")
   EndIf
+EndEvent
+
+Event OnMenuOpenST()
+	String[] op = PapyrusUtil.StringSplit(GetState(), "_")
+	If(op[0] == "djfprefcolor")
+		SetMenuDialogStartIndex(iPrefDeviceColor)
+		SetMenuDialogDefaultIndex(0)
+		SetMenuDialogOptions(DeviceColors)
+	EndIf
+EndEvent
+
+Event OnMenuAcceptST(Int aiIndex)
+	String[] op = PapyrusUtil.StringSplit(GetState(), "_")
+	If(op[0] == "djfprefcolor")
+		iPrefDeviceColor = aiIndex
+		SetMenuOptionValueST(DeviceColors[iPrefDeviceColor])
+	EndIf
 EndEvent
 
 Event OnHighlightST()
 	String[] op = PapyrusUtil.StringSplit(GetState(), "_")
   If(op[0] == "device")
-    _JFMCM.SetInfoText("$DJF_DeviceTypeHighlight")
+    SetInfoText("$DJF_DeviceTypeHighlight")
 	ElseIf(op[0] == "shutupdur")
-		_JFMCM.SetInfoText("$DJF_ShutUpDurationHighlight")
+		SetInfoText("$DJF_ShutUpDurationHighlight")
 	ElseIf(op[0] == "petcollarenab")
-		_JFMCM.SetInfoText("$DJF_PetCollarEnabHighlight")
+		SetInfoText("$DJF_PetCollarEnabHighlight")
 	ElseIf(op[0] == "petcollardur")
-		_JFMCM.SetInfoText("$DJF_PetCollarDurationHighlight")
+		SetInfoText("$DJF_PetCollarDurationHighlight")
 	ElseIf(op[0] == "khenabled")
-		_JFMCM.SetInfoText("$DJF_KHEnabled")
+		SetInfoText("$DJF_KHEnabledHighlight")
 	ElseIf(op[0] == "khfrequency")
-		_JFMCM.SetInfoText("$DJF_KHFrequency")
+		SetInfoText("$DJF_KHFrequencyHighlight")
 	ElseIf(op[0] == "khchance")
-		_JFMCM.SetInfoText("$DJF_KHChance")
+		SetInfoText("$DJF_KHChanceHighlight")
 	ElseIf(op[0] == "khmaxkeys")
-		_JFMCM.SetInfoText("$DJF_KHMaxKeys")
+		SetInfoText("$DJF_KHMaxKeysHighlight")
 	ElseIf(op[0] == "khnotify")
-		_JFMCM.SetInfoText("$DJF_KHNotify")
+		SetInfoText("$DJF_KHNotifyHighlight")
 	ElseIf(op[0] == "khtype_")
     int i = op[1] as int
-		_JFMCM.SetInfoText("$DJF_KHTypeHighlight_" + i)
+		SetInfoText("$DJF_KHTypeHighlight_" + i)
   EndIf
 EndEvent
 
@@ -207,8 +225,8 @@ EndEvent
 
 int Function getFlag(bool option)
 	If(option)
-		return _JFMCM.OPTION_FLAG_NONE
+		return OPTION_FLAG_NONE
   Else
-		return _JFMCM.OPTION_FLAG_DISABLED
+		return OPTION_FLAG_DISABLED
 	EndIf
 endFunction

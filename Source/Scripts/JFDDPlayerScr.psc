@@ -1,14 +1,18 @@
 Scriptname JFDDPlayerScr extends ReferenceAlias
 
-; ----------------------------------- Property
+JFDDMCM Property MCM Auto
 JFDDKeyInv Property Chest Auto
 
-; ----------------------------------- Variables
+Message Property LookingForKeysMsg Auto
+Keyword Property LocTypeDungeon Auto
+
+Event OnPlayerLoadGame()
+  (GetOwningQuest() as JFDDMain).Maintenance()
+EndEvent
+
 Event OnLocationChange(Location akOldLoc, Location akNewLoc)
-  If((MCM.bKHFind) && ((LocType == "Dungeon") || (LocType == "Wilderness")) && (GetOwningQuest().GetStage() >= 100))
+  If MCM.bKHEnabled && (!akNewLoc || akNewLoc.HasKeyword(LocTypeDungeon)) && JoyfulFollowers.GetFollower()
     Chest.RegisterForSingleUpdateGameTime(MCM.fKHFreq)
-    If(MCM.bDeNo == true)
-      Debug.Notification("Follower is now looking for keys")
-    EndIf
+    LookingForKeysMsg.Show()
   EndIf
 EndEvent

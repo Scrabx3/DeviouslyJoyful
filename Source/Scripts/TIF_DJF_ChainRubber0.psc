@@ -17,7 +17,7 @@ If c == 1
 	ddmain.AddRubberSuit()
 	JFMainEvents.Singleton().FIsCruel = true
 ElseIf c == 2
-	ddmain.RubberSuit(Game.GetPlayer())
+	ddmain.EquipRubberSuit(Game.GetPlayer())
 EndIf
 
 main.FadeBack()
