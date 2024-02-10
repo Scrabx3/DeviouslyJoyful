@@ -155,7 +155,7 @@ Event OnSliderAcceptST(Float afValue)
   If(op[0] == "device")
     int i = op[1] as int
 		iDeviceWeights[i] = afValue as int
-		SetSliderOptionValueST(afValue, "{0ß}")
+		SetSliderOptionValueST(afValue, "{0}")
 	ElseIf(op[0] == "shutupdur")
 		ShutUp_Var.Value = afValue
 		SetSliderOptionValueST(afValue, "{1}h")
